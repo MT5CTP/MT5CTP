@@ -1,16 +1,46 @@
-### Hi there 👋
+# MT5CTP
 
-<!--
-**MT5CTP/MT5CTP** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+#### 介绍
 
-Here are some ideas to get you started:
+- MT5CTP项目是MT5客户端直连CTP服务器，实现国内期货交易的投资管理工具。
+- MT5CTP项目使用mt5的开放性构件，精心设计和实现，充分调用mt5客户端功能和mql5编译开发环境，实现策略开发、历史数据回测、仿真交易和实盘测试，实现量化投资工具的闭环。mt5丰富的软件生态和历史沉淀，使得MT5CTP项目落地就具备高水准，高可用性。
+- 基于MQL5开发和运行量化投资策略的几个核心优势：1.事件驱动机制。区别于市场流行的tick驱动机制的商业软件，MQL5内置事件驱动机制，这一机制使策略的设计、开发与运营具有无限可能，除了标准的tick事件、order事件、trade事件、timer事件等之外，MQL5具有自定义事件的生发和处理能力，实现的非常的优雅和高效；2.支持类封装。市场流行的程序化交易软件，提供的脚本语言基本都是面向过程的，复杂的处理有些力不从心，MQL5支持面向对象的开发模式，使得开发语言具有较强的描述能力，并且提供了最大程度的代码重用机制，执行效率接近c++语言，使得高级算法、复杂算法的开发和部署成为可能；3.支持界面自定义。MQL5的开放架构，支持界面开发，客户端可以因人而异，因业务而不同，本地“小”客户端，具有“大”软件平台的支撑能力，难能可贵。
+- MT5CTP项目链接MT5客户端和CTP期货交易柜台，给实战国内期货量化投资的朋友们，提供更多选择，提供更为得心应手的工具。
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+#### 软件架构
+![MT5CTP项目架构](https://images.gitee.com/uploads/images/2021/0325/183208_423fda7c_8860760.jpeg "软件结构图.jpg")
+- （没有绘图的天分，抱歉，这图我自己都觉得丑）
+
+#### 安装教程
+【1.59以下版本适用】
+1.  下载、安装mt5客户端，并按要求注册模拟交易账户。下载地址：[MetaTrader 5 Trading Platform for Forex, Stocks, Futures](https://www.metatrader5.com/)。
+2.  下载MT5CTP项目文件、解压缩（需要解压缩工具）。下载地址：[mt5ctp下载](https://github.com/MT5CTP/MT5CTP/releases)。
+3.  打开MetaEditor 5软件，点击：文件-打开数据文件夹，进入MQL5目录；点击：文件-打开文件夹的通用数据（common目录）。
+4.  将解压后的MT5CTP项目文件目录下的6.3.19_tradeapi64_se_windows(CTP开发包)文件夹拷贝到上述打开的common目录下。初始安装时需要，后续升级安装可忽略此步骤（有项目爱好者发现升级安装时覆盖此文件夹，会导致MetaEditor 5软件编辑脚本时闪退）。
+5.  将解压后的MT5CTP项目文件目录下其他的文件夹拷贝到上述MQL5目录，安装完毕，关闭打开的文件夹和MetaEditor 5软件即可。
+6.  MT5CTP项目工作在64位windows系统，建议win10版本以上，请检查主机软硬件环境。
+
+【1.59及以上版本】
+    一键安装，开箱即用，双击桌面图标MT5CTP即可。
+#### 服务配置
+
+1.  在配置三项服务之前，请准备好simnow(上期技术)的仿真交易账户，并通过simnow社区提供的软件（比如快期）做一次登录测试，确保账户有效。
+    准备一：[申请simnow仿真交易账户](http://www.simnow.com.cn/index.action)（交易时间登录，网站经常无法登陆，耐心！）
+    准备二：[下载交易软件做登录测试](http://www.simnow.com.cn/static/softwareOthersDownload.action)
+2.  打开mt5客户端软件MetaTrader 5，在导航面板内展开服务-mt5ctp项，可以看到有DataCenter(历史数据服务)、MarketService(CTP行情服务)和TradeService(CTP交易服务)三项。
+3.  配置历史数据服务：双击DataCenter服务项，选项卡-普通：检查服务的版本，选项卡-输入：历史数据服务的配置参数（仿真使用默认值即可），选项卡-依存关系：点选允许DLL导入，点击确定即可。DataCenter服务项下多了一个DataCenter服务，在新增的服务上右键单击，选中：算法交易（翻译错误，应该译为：自动启动，更加准确），这样新增的DataCenter服务就随客户端的启动而自动启动。
+4.  配置CTP行情服务：双击MarketService服务项，选项卡-普通：检查服务的版本，选项卡-输入：CTP行情服务的配置参数（选择行情服务器，填写账户号和登录密码），选项卡-依存关系：点选允许DLL导入，点击确定即可。MarketService服务项下多了一个MarketService服务，在新增的服务上右键单击，选中：算法交易（翻译错误，应该译为：自动启动，更加准确），这样新增的MarketService服务就随客户端的启动而自动启动。MarketService服务会在[8:45]登录CTP行情服务器，[16:00]退出CTP行情服务器，夜盘[20:45]登录CTP行情服务器，次日[03:00]退出CTP行情服务器。
+5.  配置CTP交易服务：双击TradeService服务项，选项卡-普通：检查服务的版本，选项卡-输入：CTP交易服务的配置参数（选择交易服务器，填写账户号和登录密码），选项卡-依存关系：点选允许DLL导入，点击确定即可。TradeService服务项下多了一个TradeService服务，在新增的服务上右键单击，选中：算法交易（翻译错误，应该译为：自动启动，更加准确），这样新增的TradeService服务就随客户端的启动而自动启动。TradeService服务会在[8:30]登录CTP交易服务器，[16:00]退出CTP交易服务器，夜盘[20:30]登录CTP交易服务器，次日[03:00]退出CTP交易服务器。
+6.  上述各项服务，只能配置一个，多于一个的服务同时工作，会造成不可预料的结果，切记！
+7.  配置完毕后，重启mt5客户端，检查各项服务是否启动正常。
+8.  TradeService每一次登录CTP交易柜台，都会同步柜台合约（请注意第5项的工作时间），信息输出工具箱-专家面板，请查阅。首次合约同步完毕并收到期货行情后，请重新启动mt5客户端（初始化本地数据库记录），主力合约连续（888合约）与持仓量加权指数合约（000合约）开始更新行情。
+9.  MT5CTP项目附带一个开源的mt5ctptools（EA）,可加载到任意图表（期货合约）上。mt5ctptools作为MT5CTP项目的Demo发布，项目爱好者可以自由的修改。
+
+#### 开发手册
+
+- MT5CTP项目开发手册，已发布九篇九章，请查阅[知乎专栏](https://www.zhihu.com/column/c_1248950995830595584)
+
+#### 视频教程
+
+- 【赵越老师】[MT5CTP（用MT5自动交易国内期货）第1课](https://www.bilibili.com/video/BV18h411U7Ym)
+
